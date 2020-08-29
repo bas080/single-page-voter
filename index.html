@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Single Page Voter</title>
+<script>
+!function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;
+(function(){function R(a){function d(e){var b=e.charCodeAt(0);if(b!==92)return b;var a=e.charAt(1);return(b=r[a])?b:"0"<=a&&a<="7"?parseInt(e.substring(1),8):a==="u"||a==="x"?parseInt(e.substring(2),16):e.charCodeAt(1)}function g(e){if(e<32)return(e<16?"\\x0":"\\x")+e.toString(16);e=String.fromCharCode(e);return e==="\\"||e==="-"||e==="]"||e==="^"?"\\"+e:e}function b(e){var b=e.substring(1,e.length-1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g),e=[],a=
+b[0]==="^",c=["["];a&&c.push("^");for(var a=a?1:0,f=b.length;a<f;++a){var h=b[a];if(/\\[bdsw]/i.test(h))c.push(h);else{var h=d(h),l;a+2<f&&"-"===b[a+1]?(l=d(b[a+2]),a+=2):l=h;e.push([h,l]);l<65||h>122||(l<65||h>90||e.push([Math.max(65,h)|32,Math.min(l,90)|32]),l<97||h>122||e.push([Math.max(97,h)&-33,Math.min(l,122)&-33]))}}e.sort(function(e,a){return e[0]-a[0]||a[1]-e[1]});b=[];f=[];for(a=0;a<e.length;++a)h=e[a],h[0]<=f[1]+1?f[1]=Math.max(f[1],h[1]):b.push(f=h);for(a=0;a<b.length;++a)h=b[a],c.push(g(h[0])),
+h[1]>h[0]&&(h[1]+1>h[0]&&c.push("-"),c.push(g(h[1])));c.push("]");return c.join("")}function s(e){for(var a=e.source.match(/\[(?:[^\\\] ]|\\[\S\s])*]|\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\\d+|\\[^\dux]|\(\?[!:=]|[()^]|[^()[\\^]+/g),c=a.length,d=[],f=0,h=0;f<c;++f){var l=a[f];l==="("?++h:"\\"===l.charAt(0)&&(l=+l.substring(1))&&(l<=h?d[l]=-1:a[f]=g(l))}for(f=1;f<d.length;++f)-1===d[f]&&(d[f]=++x);for(h=f=0;f<c;++f)l=a[f],l==="("?(++h,d[h]||(a[f]="(?:")):"\\"===l.charAt(0)&&(l=+l.substring(1))&&l<=h&&
+(a[f]="\\"+d[l]);for(f=0;f<c;++f)"^"===a[f]&&"^"!==a[f+1]&&(a[f]="");if(e.ignoreCase&&m)for(f=0;f<c;++f)l=a[f],e=l.charAt(0),l.length>=2&&e==="["?a[f]=b(l):e!=="\\"&&(a[f]=l.replace(/[A-Za-z]/g,function(a){a=a.charCodeAt(0);return"["+String.fromCharCode(a&-33,a|32)+"]"}));return a.join("")}for(var x=0,m=!1,j=!1,k=0,c=a.length;k<c;++k){var i=a[k];if(i.ignoreCase)j=!0;else if(/[a-z]/i.test(i.source.replace(/\\u[\da-f]{4}|\\x[\da-f]{2}|\\[^UXux]/gi,""))){m=!0;j=!1;break}}for(var r={b:8,t:9,n:10,v:11,
+f:12,r:13},n=[],k=0,c=a.length;k<c;++k){i=a[k];if(i.global||i.multiline)throw Error(""+i);n.push("(?:"+s(i)+")")}return RegExp(n.join("|"),j?"gi":"g")}function S(a,d){function g(a){var c=a.nodeType;if(c==1){if(!b.test(a.className)){for(c=a.firstChild;c;c=c.nextSibling)g(c);c=a.nodeName.toLowerCase();if("br"===c||"li"===c)s[j]="\n",m[j<<1]=x++,m[j++<<1|1]=a}}else if(c==3||c==4)c=a.nodeValue,c.length&&(c=d?c.replace(/\r\n?/g,"\n"):c.replace(/[\t\n\r ]+/g," "),s[j]=c,m[j<<1]=x,x+=c.length,m[j++<<1|1]=
+a)}var b=/(?:^|\s)nocode(?:\s|$)/,s=[],x=0,m=[],j=0;g(a);return{a:s.join("").replace(/\n$/,""),d:m}}function H(a,d,g,b){d&&(a={a:d,e:a},g(a),b.push.apply(b,a.g))}function T(a){for(var d=void 0,g=a.firstChild;g;g=g.nextSibling)var b=g.nodeType,d=b===1?d?a:g:b===3?U.test(g.nodeValue)?a:d:d;return d===a?void 0:d}function D(a,d){function g(a){for(var j=a.e,k=[j,"pln"],c=0,i=a.a.match(s)||[],r={},n=0,e=i.length;n<e;++n){var z=i[n],w=r[z],t=void 0,f;if(typeof w==="string")f=!1;else{var h=b[z.charAt(0)];
+if(h)t=z.match(h[1]),w=h[0];else{for(f=0;f<x;++f)if(h=d[f],t=z.match(h[1])){w=h[0];break}t||(w="pln")}if((f=w.length>=5&&"lang-"===w.substring(0,5))&&!(t&&typeof t[1]==="string"))f=!1,w="src";f||(r[z]=w)}h=c;c+=z.length;if(f){f=t[1];var l=z.indexOf(f),B=l+f.length;t[2]&&(B=z.length-t[2].length,l=B-f.length);w=w.substring(5);H(j+h,z.substring(0,l),g,k);H(j+h+l,f,I(w,f),k);H(j+h+B,z.substring(B),g,k)}else k.push(j+h,w)}a.g=k}var b={},s;(function(){for(var g=a.concat(d),j=[],k={},c=0,i=g.length;c<i;++c){var r=
+g[c],n=r[3];if(n)for(var e=n.length;--e>=0;)b[n.charAt(e)]=r;r=r[1];n=""+r;k.hasOwnProperty(n)||(j.push(r),k[n]=q)}j.push(/[\S\s]/);s=R(j)})();var x=d.length;return g}function v(a){var d=[],g=[];a.tripleQuotedStrings?d.push(["str",/^(?:'''(?:[^'\\]|\\[\S\s]|''?(?=[^']))*(?:'''|$)|"""(?:[^"\\]|\\[\S\s]|""?(?=[^"]))*(?:"""|$)|'(?:[^'\\]|\\[\S\s])*(?:'|$)|"(?:[^"\\]|\\[\S\s])*(?:"|$))/,q,"'\""]):a.multiLineStrings?d.push(["str",/^(?:'(?:[^'\\]|\\[\S\s])*(?:'|$)|"(?:[^"\\]|\\[\S\s])*(?:"|$)|`(?:[^\\`]|\\[\S\s])*(?:`|$))/,
+q,"'\"`"]):d.push(["str",/^(?:'(?:[^\n\r'\\]|\\.)*(?:'|$)|"(?:[^\n\r"\\]|\\.)*(?:"|$))/,q,"\"'"]);a.verbatimStrings&&g.push(["str",/^@"(?:[^"]|"")*(?:"|$)/,q]);var b=a.hashComments;b&&(a.cStyleComments?(b>1?d.push(["com",/^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/,q,"#"]):d.push(["com",/^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\n\r]*)/,q,"#"]),g.push(["str",/^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/,q])):d.push(["com",
+/^#[^\n\r]*/,q,"#"]));a.cStyleComments&&(g.push(["com",/^\/\/[^\n\r]*/,q]),g.push(["com",/^\/\*[\S\s]*?(?:\*\/|$)/,q]));if(b=a.regexLiterals){var s=(b=b>1?"":"\n\r")?".":"[\\S\\s]";g.push(["lang-regex",RegExp("^(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*("+("/(?=[^/*"+b+"])(?:[^/\\x5B\\x5C"+b+"]|\\x5C"+s+"|\\x5B(?:[^\\x5C\\x5D"+b+"]|\\x5C"+
+s+")*(?:\\x5D|$))+/")+")")])}(b=a.types)&&g.push(["typ",b]);b=(""+a.keywords).replace(/^ | $/g,"");b.length&&g.push(["kwd",RegExp("^(?:"+b.replace(/[\s,]+/g,"|")+")\\b"),q]);d.push(["pln",/^\s+/,q," \r\n\t\u00a0"]);b="^.[^\\s\\w.$@'\"`/\\\\]*";a.regexLiterals&&(b+="(?!s*/)");g.push(["lit",/^@[$_a-z][\w$@]*/i,q],["typ",/^(?:[@_]?[A-Z]+[a-z][\w$@]*|\w+_t\b)/,q],["pln",/^[$_a-z][\w$@]*/i,q],["lit",/^(?:0x[\da-f]+|(?:\d(?:_\d+)*\d*(?:\.\d*)?|\.\d\+)(?:e[+-]?\d+)?)[a-z]*/i,q,"0123456789"],["pln",/^\\[\S\s]?/,
+q],["pun",RegExp(b),q]);return D(d,g)}function J(a,d,g){function b(a){var c=a.nodeType;if(c==1&&!x.test(a.className))if("br"===a.nodeName)s(a),a.parentNode&&a.parentNode.removeChild(a);else for(a=a.firstChild;a;a=a.nextSibling)b(a);else if((c==3||c==4)&&g){var d=a.nodeValue,i=d.match(m);if(i)c=d.substring(0,i.index),a.nodeValue=c,(d=d.substring(i.index+i[0].length))&&a.parentNode.insertBefore(j.createTextNode(d),a.nextSibling),s(a),c||a.parentNode.removeChild(a)}}function s(a){function b(a,c){var d=
+c?a.cloneNode(!1):a,e=a.parentNode;if(e){var e=b(e,1),g=a.nextSibling;e.appendChild(d);for(var i=g;i;i=g)g=i.nextSibling,e.appendChild(i)}return d}for(;!a.nextSibling;)if(a=a.parentNode,!a)return;for(var a=b(a.nextSibling,0),d;(d=a.parentNode)&&d.nodeType===1;)a=d;c.push(a)}for(var x=/(?:^|\s)nocode(?:\s|$)/,m=/\r\n?|\n/,j=a.ownerDocument,k=j.createElement("li");a.firstChild;)k.appendChild(a.firstChild);for(var c=[k],i=0;i<c.length;++i)b(c[i]);d===(d|0)&&c[0].setAttribute("value",d);var r=j.createElement("ol");
+r.className="linenums";for(var d=Math.max(0,d-1|0)||0,i=0,n=c.length;i<n;++i)k=c[i],k.className="L"+(i+d)%10,k.firstChild||k.appendChild(j.createTextNode("\u00a0")),r.appendChild(k);a.appendChild(r)}function p(a,d){for(var g=d.length;--g>=0;){var b=d[g];F.hasOwnProperty(b)?E.console&&console.warn("cannot override language handler %s",b):F[b]=a}}function I(a,d){if(!a||!F.hasOwnProperty(a))a=/^\s*</.test(d)?"default-markup":"default-code";return F[a]}function K(a){var d=a.h;try{var g=S(a.c,a.i),b=g.a;
+a.a=b;a.d=g.d;a.e=0;I(d,b)(a);var s=/\bMSIE\s(\d+)/.exec(navigator.userAgent),s=s&&+s[1]<=8,d=/\n/g,x=a.a,m=x.length,g=0,j=a.d,k=j.length,b=0,c=a.g,i=c.length,r=0;c[i]=m;var n,e;for(e=n=0;e<i;)c[e]!==c[e+2]?(c[n++]=c[e++],c[n++]=c[e++]):e+=2;i=n;for(e=n=0;e<i;){for(var p=c[e],w=c[e+1],t=e+2;t+2<=i&&c[t+1]===w;)t+=2;c[n++]=p;c[n++]=w;e=t}c.length=n;var f=a.c,h;if(f)h=f.style.display,f.style.display="none";try{for(;b<k;){var l=j[b+2]||m,B=c[r+2]||m,t=Math.min(l,B),A=j[b+1],G;if(A.nodeType!==1&&(G=x.substring(g,
+t))){s&&(G=G.replace(d,"\r"));A.nodeValue=G;var L=A.ownerDocument,o=L.createElement("span");o.className=c[r+1];var v=A.parentNode;v.replaceChild(o,A);o.appendChild(A);g<l&&(j[b+1]=A=L.createTextNode(x.substring(t,l)),v.insertBefore(A,o.nextSibling))}g=t;g>=l&&(b+=2);g>=B&&(r+=2)}}finally{if(f)f.style.display=h}}catch(u){E.console&&console.log(u&&u.stack||u)}}var E=window,y=["break,continue,do,else,for,if,return,while"],C=[[y,"auto,case,char,const,default,double,enum,extern,float,goto,inline,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile"],
+"catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof"],M=[C,"alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,delegate,dynamic_cast,explicit,export,friend,generic,late_check,mutable,namespace,nullptr,property,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where"],V=[C,"abstract,assert,boolean,byte,extends,final,finally,implements,import,instanceof,interface,null,native,package,strictfp,super,synchronized,throws,transient"],
+N=[C,"abstract,as,base,bool,by,byte,checked,decimal,delegate,descending,dynamic,event,finally,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,null,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where"],C=[C,"debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN"],O=[y,"and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None"],
+P=[y,"alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END"],W=[y,"as,assert,const,copy,drop,enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,pub,pure,ref,self,static,struct,true,trait,type,unsafe,use"],y=[y,"case,done,elif,esac,eval,fi,function,in,local,set,then,until"],Q=/^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/,
+U=/\S/,X=v({keywords:[M,N,C,"caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END",O,P,y],hashComments:!0,cStyleComments:!0,multiLineStrings:!0,regexLiterals:!0}),F={};p(X,["default-code"]);p(D([],[["pln",/^[^<?]+/],["dec",/^<!\w[^>]*(?:>|$)/],["com",/^<\!--[\S\s]*?(?:--\>|$)/],["lang-",/^<\?([\S\s]+?)(?:\?>|$)/],["lang-",/^<%([\S\s]+?)(?:%>|$)/],["pun",/^(?:<[%?]|[%?]>)/],["lang-",
+/^<xmp\b[^>]*>([\S\s]+?)<\/xmp\b[^>]*>/i],["lang-js",/^<script\b[^>]*>([\S\s]*?)(<\/script\b[^>]*>)/i],["lang-css",/^<style\b[^>]*>([\S\s]*?)(<\/style\b[^>]*>)/i],["lang-in.tag",/^(<\/?[a-z][^<>]*>)/i] ]),["default-markup","htm","html","mxml","xhtml","xml","xsl"]);p(D([["pln",/^\s+/,q," \t\r\n"],["atv",/^(?:"[^"]*"?|'[^']*'?)/,q,"\"'"] ],[["tag",/^^<\/?[a-z](?:[\w-.:]*\w)?|\/?>$/i],["atn",/^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i],["lang-uq.val",/^=\s*([^\s"'>]*(?:[^\s"'/>]|\/(?=\s)))/],["pun",/^[/<->]+/],
+["lang-js",/^on\w+\s*=\s*"([^"]+)"/i],["lang-js",/^on\w+\s*=\s*'([^']+)'/i],["lang-js",/^on\w+\s*=\s*([^\s"'>]+)/i],["lang-css",/^style\s*=\s*"([^"]+)"/i],["lang-css",/^style\s*=\s*'([^']+)'/i],["lang-css",/^style\s*=\s*([^\s"'>]+)/i] ]),["in.tag"]);p(D([],[["atv",/^[\S\s]+/] ]),["uq.val"]);p(v({keywords:M,hashComments:!0,cStyleComments:!0,types:Q}),["c","cc","cpp","cxx","cyc","m"]);p(v({keywords:"null,true,false"}),["json"]);p(v({keywords:N,hashComments:!0,cStyleComments:!0,verbatimStrings:!0,types:Q}),
+["cs"]);p(v({keywords:V,cStyleComments:!0}),["java"]);p(v({keywords:y,hashComments:!0,multiLineStrings:!0}),["bash","bsh","csh","sh"]);p(v({keywords:O,hashComments:!0,multiLineStrings:!0,tripleQuotedStrings:!0}),["cv","py","python"]);p(v({keywords:"caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END",hashComments:!0,multiLineStrings:!0,regexLiterals:2}),["perl","pl","pm"]);p(v({keywords:P,
+hashComments:!0,multiLineStrings:!0,regexLiterals:!0}),["rb","ruby"]);p(v({keywords:C,cStyleComments:!0,regexLiterals:!0}),["javascript","js"]);p(v({keywords:"all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes",hashComments:3,cStyleComments:!0,multilineStrings:!0,tripleQuotedStrings:!0,regexLiterals:!0}),["coffee"]);p(v({keywords:W,cStyleComments:!0,multilineStrings:!0}),["rc","rs","rust"]);
+p(D([],[["str",/^[\S\s]+/] ]),["regex"]);var Y=E.PR={createSimpleLexer:D,registerLangHandler:p,sourceDecorator:v,PR_ATTRIB_NAME:"atn",PR_ATTRIB_VALUE:"atv",PR_COMMENT:"com",PR_DECLARATION:"dec",PR_KEYWORD:"kwd",PR_LITERAL:"lit",PR_NOCODE:"nocode",PR_PLAIN:"pln",PR_PUNCTUATION:"pun",PR_SOURCE:"src",PR_STRING:"str",PR_TAG:"tag",PR_TYPE:"typ",prettyPrintOne:E.prettyPrintOne=function(a,d,g){var b=document.createElement("div");b.innerHTML="<pre>"+a+"</pre>";b=b.firstChild;g&&J(b,g,!0);K({h:d,j:g,c:b,i:1});
+return b.innerHTML},prettyPrint:E.prettyPrint=function(a,d){function g(){for(var b=E.PR_SHOULD_USE_CONTINUATION?c.now()+250:Infinity;i<p.length&&c.now()<b;i++){for(var d=p[i],j=h,k=d;k=k.previousSibling;){var m=k.nodeType,o=(m===7||m===8)&&k.nodeValue;if(o?!/^\??prettify\b/.test(o):m!==3||/\S/.test(k.nodeValue))break;if(o){j={};o.replace(/\b(\w+)=([\w%+\-.:]+)/g,function(a,b,c){j[b]=c});break}}k=d.className;if((j!==h||e.test(k))&&!v.test(k)){m=!1;for(o=d.parentNode;o;o=o.parentNode)if(f.test(o.tagName)&&
+o.className&&e.test(o.className)){m=!0;break}if(!m){d.className+=" prettyprinted";m=j.lang;if(!m){var m=k.match(n),y;if(!m&&(y=T(d))&&t.test(y.tagName))m=y.className.match(n);m&&(m=m[1])}if(w.test(d.tagName))o=1;else var o=d.currentStyle,u=s.defaultView,o=(o=o?o.whiteSpace:u&&u.getComputedStyle?u.getComputedStyle(d,q).getPropertyValue("white-space"):0)&&"pre"===o.substring(0,3);u=j.linenums;if(!(u=u==="true"||+u))u=(u=k.match(/\blinenums\b(?::(\d+))?/))?u[1]&&u[1].length?+u[1]:!0:!1;u&&J(d,u,o);r=
+{h:m,c:d,j:u,i:o};K(r)}}}i<p.length?setTimeout(g,250):"function"===typeof a&&a()}for(var b=d||document.body,s=b.ownerDocument||document,b=[b.getElementsByTagName("pre"),b.getElementsByTagName("code"),b.getElementsByTagName("xmp")],p=[],m=0;m<b.length;++m)for(var j=0,k=b[m].length;j<k;++j)p.push(b[m][j]);var b=q,c=Date;c.now||(c={now:function(){return+new Date}});var i=0,r,n=/\blang(?:uage)?-([\w.]+)(?!\S)/,e=/\bprettyprint\b/,v=/\bprettyprinted\b/,w=/pre|xmp/i,t=/^code$/i,f=/^(?:pre|code|xmp)$/i,
+h={};g()}};typeof define==="function"&&define.amd&&define("google-code-prettify",[],function(){return Y})})();}()
+</script>
+<style>
+.pln{color:#1b181b}.str{color:#918b3b}.kwd{color:#7b59c0}.com{color:#9e8f9e}.typ{color:#516aec}.lit{color:#a65926}.clo,.opn,.pun{color:#1b181b}.tag{color:#ca402b}.atn{color:#a65926}.atv{color:#159393}.dec{color:#a65926}.var{color:#ca402b}.fun{color:#516aec}pre.prettyprint{background:#f7f3f7;color:#ab9bab;font-family:Menlo,Consolas,"Bitstream Vera Sans Mono","DejaVu Sans Mono",Monaco,monospace;font-size:12px;line-height:1.5;border:1px solid #d8cad8;padding:10px}ol.linenums{margin-top:0;margin-bottom:0}
+body{min-width:200px;max-width:850px;margin:0 auto;padding:30px;}.chapter-nav{font-size: 10pt;}a:link,a:visited{color:#00f}.codeblock_name,code,pre.prettyprint{font-family:Monaco,"Lucida Console",monospace}body{font-size:14pt}.codeblock_name,.math,.seealso,code{font-size:10pt}.codeblock{page-break-inside:avoid;padding-bottom:15px}.math{text-indent:0}pre.prettyprint{font-size:10pt;padding:10px;border-radius:10px;border:none;white-space:pre-wrap}.codeblock_name{margin-top:1.25em;display:block}a:link{text-decoration:none}a:link:not(.lit):hover{color:#00f;text-decoration:underline}a:link:active{color:red}h4{padding-right:1.25em}h4.noheading{margin-bottom:0}h1{text-align:center}code{padding:2px}pre{-moz-tab-size:4;-o-tab-size:4;tab-size:4}p:not(.notp){margin:0;text-indent:2em}.two-col{list-style-type:none}.two-col li:before{content:'-';padding:5px;margin-right:5px;color:orange;background-color:#fff;display:inline-block}@media print{body{font-size:10pt}pre.prettyprint{font-size:8pt}.seealso{font-size:9pt}.codeblock_name,.math,code{font-size:8pt}.math{text-indent:0}}
+blockquote {
+  font-style: italic;
+  opacity: 0.8;
+}
+</style>
+</head>
+<body onload="prettyPrint()">
+<section>
+<h1>Single Page Voter</h1>
+<a name="1:1"><div class="section"><h4>1. Introduction</h4></a>
+<p>Single Page Voter is a tool for performing small in person votes. Do not use
+this for anything to serious.
+</p>
+<p>While implementing this tool I have decided to:
+</p>
+<ol>
+<li><p>Use <a href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a> as my intention is to convey more clearly my
+   design choices to the reader. For install instructions see the <a href="https://github.com/zyedidia/Literate">literate
+   GitHub</a>
+</p>
+</li>
+<li><p>Use Vanilla JS to convey my understanding of the fundamentals and the
+   browser.
+</p>
+</li>
+<li><p>Design for <em>bleeding</em> edge browsers only. Not cleaning up event listeners
+   when an element is removed.
+</p>
+</li>
+<li><p>Not focus on tools like linters, prettifiers, transpilers and bundlers.
+</p>
+</li>
+</ol>
+<p>See single page voter in action over <a href="./dist/voter.html">here</a>, or keep reading to see how and
+why I have implemented the way I did.
+</p>
+<blockquote><p> Whenever you see text styled in this manner, it takes you into my mind. Most
+ of the consideration does not end up as working code. These blocks explain
+ some of my thought process and design choices.
+</p>
+</blockquote>
+
+</div>
+<a name="1:2"><div class="section"><h4>2. Standard HTML template</h4></a>
+<p>Like any good frontend web application we start with a simple HTML template,
+then the code, followed by styling.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>./dist/voter.html</strong> <a href="index.html#1:2">2</a>}</span>
+<pre class="prettyprint">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+  &lt;head&gt;
+    &lt;title&gt;Single page voter&lt;/title&gt;
+<span class="nocode pln">    {Pure CSS Link, <a href="index.html#1:23">23</a>}</span>
+    &lt;style&gt;
+<span class="nocode pln">      {Single Page Voter CSS rules, <a href="index.html#1:24">24</a>}</span>
+    &lt;/style&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;h1&gt;Single Page Voter&lt;/h1&gt;
+<span class="nocode pln">    {Single Page Voter HTML, <a href="index.html#1:3">3</a>}</span>
+  &lt;/body&gt;
+
+  &lt;script&gt;
+<span class="nocode pln">    {Single Page Voter Script, <a href="index.html#1:4">4</a>}</span>
+  &lt;/script&gt;
+
+&lt;/html&gt;
+</pre>
+
+
+
+</div>
+<blockquote><p> Notice that we define the script tag after the body. By doing this the Voter
+ HTML has been registered and is accessible through the DOM API. It is also
+ possible to listen to load events but I find this approach requiring the least
+ amount of effort and code.
+</p>
+</blockquote>
+
+</div>
+<a name="1:3"><div class="section"><h4>3. The Voter application HTML</h4></a>
+<p>All but the first element is generated using Javascript. This div contains an
+<em>id</em> which allows us to reference it from JS using <code>document.getElementById</code>.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Single Page Voter HTML <a href="index.html#1:3">3</a>}</span>
+<pre class="prettyprint">
+ &lt;div id='poll-creator'&gt;&lt;/div&gt;
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:2">2</a></p>
+</div>
+<blockquote><p> Why not append directly to the body? With the <code>id</code> approach you have more
+ control in the HTML as to where the component should be rendered. It makes
+ it easier when combining other components in the HTML.
+</p>
+</blockquote>
+
+</div>
+<a name="1:4"><div class="section"><h4>4. Vanilla Javascript</h4></a>
+<p>No need for frameworks, bundlers and package management for a project as simple
+as this.
+</p>
+<p>We will use an <a href="https://en.wikipedia.org/wiki/Immediately-invoked_function_expression">IIFE</a>. This allows one to define variables without changing
+any global variables/objects.
+</p>
+<blockquote><p> To prevent naming collisions within our own IIFE, we could define a namespace
+ object. This can come in handy when in the future you or someone else pulls in
+ a dependency in the global environment or the IFFE's code block. However,
+ I did not do this. If a project requires this type of code separation it is
+ better to use modules and bundling. Let's look at that IIFE.
+</p>
+</blockquote>
+
+<div class="codeblock">
+<span class="codeblock_name">{Single Page Voter Script <a href="index.html#1:4">4</a>}</span>
+<pre class="prettyprint">
+(function() {
+<span class="nocode pln">  {State Utility, <a href="index.html#1:7">7</a>}</span>
+<span class="nocode pln">  {Helpers, <a href="index.html#1:18">18</a>}</span>
+<span class="nocode pln">  {Initialize Components, <a href="index.html#1:10">10</a>}</span>
+})()
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:2">2</a></p>
+</div>
+<p>Notice that the code is split up into a state utility, some helpers and the
+initialization of the components.
+</p>
+<blockquote><p> I could also have made a main or app function and then just call it. I would
+ get the same benefit of the IIFE. I would however mutate the global
+ environment with a reference to the main/app function.
+</p>
+</blockquote>
+
+</div>
+<a name="1:5"><div class="section"><h4>5. Colors</h4></a>
+<p>Used to make the bar chart look prettier.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Colors Array <a href="index.html#1:5">5</a>}</span>
+<pre class="prettyprint">
+const colors = [
+  '#EE82EE',
+  '#EEE8AA',
+  '#F08080',
+  '#F0E68C',
+  '#F0F8FF',
+  '#F0FFF0',
+  '#F0FFFF',
+  '#F4A460',
+  '#F5DEB3',
+  '#F5F5DC',
+  '#F5F5F5',
+  '#F5FFFA',
+  '#F8F8FF',
+  '#FA8072',
+]
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:22">22</a></p>
+</div>
+</div>
+<a name="1:6"><div class="section"><h4>6. Fruits</h4></a>
+<p>We will use this list of fruits later in the program.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Fruits Array <a href="index.html#1:6">6</a>}</span>
+<pre class="prettyprint">
+const fruits = [
+  'Apples ',
+  'Apricots ',
+  'Banana ',
+  'Cantaloupe ',
+  'Cherry ',
+  'Avocado',
+  'Carissa',
+  'Carob',
+  'Cattleya Guava',
+]
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:10">10</a></p>
+</div>
+</div>
+<a name="1:7"><div class="section"><h4>7. State Utility</h4></a>
+<p>We have some state to keep around. For this we make a little state utility. It
+allows transforming the state and listening to state changes.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{State Utility <a href="index.html#1:7">7</a>}</span>
+<pre class="prettyprint">
+function state(initialState) {
+  let state = initialState();
+  const callbacks = {}
+  let id = 0
+
+  function transform(transformFn) {
+    state = transformFn(state)
+
+    // Call all listener callbacks when transform occurs.
+    Object.keys(callbacks)
+      .forEach(id =&gt; callbacks[id](state))
+  }
+
+  function addListener(callback) {
+    id = id + 1
+    callback(state)
+    callbacks[id] = callback
+    return id
+  }
+
+  function removeListener(id) {
+    delete callbacks[id]
+  }
+
+  function reset() {
+    transform(() =&gt; initialState())
+  }
+
+  return {
+    reset,
+    transform,
+    addListener,
+    removeListener,
+  }
+}
+</pre>
+
+
+<p class="seealso">Used in sections <a href="index.html#1:4">4</a> and <a href="index.html#1:9">9</a></p>
+</div>
+<blockquote><p> I went for the simplest thing I could think of.
+</p>
+</blockquote>
+
+</div>
+<a name="1:8"><div class="section"><h4>8. Testing Our JS code</h4></a>
+<p>I have chosen a tool I find very useful which is Perl's <a href="https://perldoc.perl.org/prove.html">prove</a>. It is
+a test harness that will run all <code>./t/*.t</code> files. It expects these scripts to
+output <a href="http://testanything.org/">TAP</a>.
+</p>
+<p>To make this possible we need a JS library that supports tap. NPM's <a href="https://www.npmjs.com/package/tape">tape</a>
+should do the job.
+</p>
+<blockquote><p> We are running our unit tests in a node environment.
+</p>
+</blockquote>
+
+<div class="codeblock">
+<span class="codeblock_name">{Tape Script <a href="index.html#1:8">8</a>}</span>
+<pre class="prettyprint">
+#!/usr/bin/env node
+
+const test = require('tape')
+</pre>
+
+
+<p class="seealso">Used in sections <a href="index.html#1:9">9</a> and <a href="index.html#1:14">14</a></p>
+</div>
+</div>
+<a name="1:9"><div class="section"><h4>9. Testing the State Utility</h4></a>
+<p>Because we are using lit, we can just concat the State Utility section directly
+into our file. It is more common to see this utility be defined in a node
+module instead.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>./t/state.t</strong> <a href="index.html#1:9">9</a>}</span>
+<pre class="prettyprint">
+<span class="nocode pln">{Tape Script, <a href="index.html#1:8">8</a>}</span>
+<span class="nocode pln">{State Utility, <a href="index.html#1:7">7</a>}</span>
+
+const always = v =&gt; () =&gt; v
+
+test('Initial state stays the same after transform (reference)', t =&gt; {
+  const init = {}
+  const myState = state(always(init))
+
+  myState.transform(state =&gt; {
+    t.equals(state, init)
+    return state
+  })
+
+  myState.transform(state =&gt; {
+    t.equals(state, init)
+    t.end()
+  })
+})
+
+test('Event listener is called on register', t =&gt; {
+  const init = {}
+  const myState = state(always(init))
+
+  myState.addListener(state =&gt; {
+    t.equals(init, state)
+    t.end()
+  })
+})
+
+test('Event listener is called on state transform', t =&gt; {
+  const init = {}
+  const myState = state(always(init))
+
+  t.plan(2)
+
+  myState.addListener(state =&gt; {
+    t.equals(state, init)
+  })
+
+  myState.transform(v =&gt; v)
+  t.end()
+})
+
+test('Event listener is not called after remove', t =&gt; {
+  const init = {}
+  const myState = state(always(init))
+
+  t.plan(1)
+
+  const id = myState.addListener(state =&gt; {
+    t.equals(init, state)
+  })
+
+  myState.removeListener(id)
+  myState.transform(v =&gt; v)
+
+  t.end()
+})
+
+test('Reset the state', t =&gt; {
+  const initFn = always({ a: 1 })
+
+  const myState = state(initFn)
+
+  const changed = {a: 2}
+
+  myState.transform(state =&gt; changed)
+
+  myState.removeListener(
+    myState.addListener(state =&gt; t.deepEquals(state, changed)))
+
+  myState.reset()
+
+  myState.addListener(state =&gt; t.deepEquals(state, initFn()))
+
+  t.end()
+})
+
+</pre>
+
+
+
+</div>
+<blockquote><p> Thinking of possible states an application can run into and writing tests for
+ these cases is something that requires skill and time. I find generative and
+ property based testing a great tool for putting your application to the test.
+ For the sake of time I'll leave that for another day.
+</p>
+</blockquote>
+<p>These tests can be run by executing the <a href="./t/state.t"><code>./t/state.t</code></a> file or by running
+the <a href="https://perldoc.perl.org/prove.html">prove</a> command. Do make sure to first install the tape dependency with
+<code>npm i</code>.
+</p>
+<p>We have some tests for the state utility and we are ready to start initializing
+the components.
+</p>
+
+</div>
+<a name="1:10"><div class="section"><h4>10. Initializing Components</h4></a>
+<p>The application consists out of three columns. Within these columns we can also
+sub divide the UI into simpler parts. From now on we name these columns and
+parts <em>components</em>.
+</p>
+<p>Before we have a look at the individual components, we'll write the code
+necessary to wire up the components and append them to the page. You can
+consider this code block the <em>main</em> of the app.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Initialize Components <a href="index.html#1:10">10</a>}</span>
+<pre class="prettyprint">
+// common components
+<span class="nocode pln">{Input Component, <a href="index.html#1:11">11</a>}</span>
+
+// first column
+<span class="nocode pln">{Edit Poll Component, <a href="index.html#1:12">12</a>}</span>
+
+// second column
+<span class="nocode pln">{Vote Component, <a href="index.html#1:21">21</a>}</span>
+
+// third column
+<span class="nocode pln">{Result Component, <a href="index.html#1:22">22</a>}</span>
+
+function initialState() {
+<span class="nocode pln">  {Fruits Array, <a href="index.html#1:6">6</a>}</span>
+
+  return {
+    optionInput: '',
+    question: 'What fruit is the best fruit?',
+    options: fruits,
+    votes: {},
+  }
+}
+
+const myState = state(initialState)
+
+<span class="nocode pln">{Computed State, <a href="index.html#1:13">13</a>}</span>
+
+const appElem = document.getElementById('poll-creator')
+
+// columns
+const editPoll = appElem.appendChild(editPollComponent(myState))
+const vote = appElem.appendChild(voteComponent(myState))
+const result = appElem.appendChild(resultComponent(myState))
+
+<span class="nocode pln">{Hide Vote And Result Column, <a href="index.html#1:10">10</a>}</span>
+<span class="nocode pln">{Reset Votes On Poll Change, <a href="index.html#1:10">10</a>}</span>
+
+appElem.classList.add('pure-g')
+
+editPoll.classList.add('pure-u-1')
+vote.classList.add('pure-u-1')
+result.classList.add('pure-u-1')
+
+editPoll.classList.add('pure-u-sm-1-3')
+vote.classList.add('pure-u-sm-1-3')
+result.classList.add('pure-u-sm-1-3')
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:4">4</a></p>
+</div>
+<p>Hide the vote and result column when there is no question or enough options
+defined.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Hide Vote And Result Column <a href="index.html#1:10">10</a>}</span>
+<pre class="prettyprint">
+myState.addListener(state =&gt; {
+  const displayType = myState.computed.canVote(state) &amp;&amp; state.question
+    ? 'block'
+    : 'none'
+
+  vote.style.display = displayType
+  result.style.display = displayType
+})
+</pre>
+
+
+
+</div>
+<p>Whenever the poll changes we want to reset the votes. We define this in a state
+listener in order to have the checking and changing all in one place.
+</p>
+<blockquote><p> Previously I several <code>state.votes = {}</code> peppered througout some callbacks.
+ This goes against the DRY principle which makes it harder to maintain the
+ code.
+</p>
+</blockquote>
+
+<div class="codeblock">
+<span class="codeblock_name">{Reset Votes On Poll Change <a href="index.html#1:10">10</a>}</span>
+<pre class="prettyprint">
+function resetVotesOnPollChange() {
+  let oldValue
+
+  return ({options, question}) =&gt; {
+    const newValue = JSON.stringify({
+      options: options,
+      question: question
+    })
+
+    if (oldValue === undefined)
+      oldValue = newValue
+
+    if (oldValue !== newValue) {
+      oldValue = newValue
+      myState.transform(state =&gt; {
+        state.votes = {}
+        return state
+      })
+    }
+  }
+}
+
+myState.addListener(resetVotesOnPollChange())
+</pre>
+
+
+
+</div>
+<blockquote><p> I could have used an deep equality function or better suited data types for
+ checking if the poll information has changed. Using JSON.stringify was
+ however the most obvious approach.
+</p>
+</blockquote>
+
+</div>
+<a name="1:11"><div class="section"><h4>11. Input Component</h4></a>
+<p>One of the requirements is that all input fields have an 80 character limit. We
+create a component with this common behavior and use it whenever we create
+an input field.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Input Component <a href="index.html#1:11">11</a>}</span>
+<pre class="prettyprint">
+function inputComponent() {
+  const input = document.createElement('input')
+
+  input.addEventListener('input', event =&gt; {
+    input.value = input.value.substring(0, 80)
+  })
+
+  return input
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:10">10</a></p>
+</div>
+</div>
+<a name="1:12"><div class="section"><h4>12. Edit Poll Component</h4></a>
+<p>The first column is the poll editing form. The component is able to transform
+the poll. <strong>Just like every "component function", it returns an element.</strong>
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Edit Poll Component <a href="index.html#1:12">12</a>}</span>
+<pre class="prettyprint">
+function editPollComponent(myState) {
+  const form = document.createElement('form')
+  const p = document.createElement('p')
+  const question = inputComponent()
+  const options = optionsComponent(myState)
+  const optionsCap = optionsCapComponent(myState)
+  const reset = document.createElement('button')
+
+  reset.textContent = 'reset'
+
+  myState.addListener(state =&gt; {
+    question.value = state.question
+  })
+
+  function updateQuestion(event) {
+    myState.transform(state =&gt; {
+      state.question = event.target.value
+      return state
+    })
+  }
+
+<span class="nocode pln">  {Options Component, <a href="index.html#1:15">15</a>}</span>
+<span class="nocode pln">  {Options Cap Component, <a href="index.html#1:12">12</a>}</span>
+<span class="nocode pln">  {Add Option Component, <a href="index.html#1:17">17</a>}</span>
+
+  reset.addEventListener('click', event =&gt; {
+    event.preventDefault()
+    myState.reset()
+    return false
+  })
+
+  question.addEventListener('input', updateQuestion)
+
+  // Prevent enter from pressing any buttons.
+  question.addEventListener('keypress', event =&gt; {
+    if ((event.which || event.keyCode || event.charCode) === 13)
+      event.preventDefault()
+  })
+
+  p.appendChild(question)
+
+  form.appendChild(p)
+  form.appendChild(options)
+  form.appendChild(addOptionComponent(myState))
+  form.appendChild(optionsCap)
+  form.appendChild(reset)
+
+  return form
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:10">10</a></p>
+</div>
+<p>Then the component that shows how many options one has created and how many one
+is allowed to make. A basic component that demo's string interpolation.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Options Cap Component <a href="index.html#1:12">12</a>}</span>
+<pre class="prettyprint">
+function optionsCapComponent(myState) {
+  const elem = document.createElement('div')
+
+  myState.addListener(state =&gt; {
+    const count = myState.computed.optionsCount(state)
+    elem.innerHTML = `${count}/10 possible answers`
+  })
+
+  return elem
+}
+</pre>
+
+
+
+</div>
+<blockquote><p> First I was using the older <code>'string' + 'string'</code> string interpolation. In
+ this case both approaches would suffice.
+</p>
+</blockquote>
+
+</div>
+<a name="1:13"><div class="section"><h4>13. Computed State</h4></a>
+<p>Some values are derived from the state. We name these values computed. Here we
+list all the helpers for computed values.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Computed State <a href="index.html#1:13">13</a>}</span>
+<pre class="prettyprint">
+myState.computed = {
+  options(state) {
+    return compact(state.options)
+  },
+  optionsCount(state) {
+    return this.options(state).length
+  },
+  optionsWithIndex(state) {
+    return compactWithIndex(state.options)
+  },
+  totalVotes(state) {
+    return Object.values(state.votes).reduce((a, b) =&gt; a + b, 0)
+  },
+  maxVotes(state) {
+    return Object.values(state.votes)
+      .reduce((a, b) =&gt; Math.max(a, b), 0) || 0
+  },
+  optionVotes(state) {
+    return toPairs(state.votes).map(optionVote =&gt;
+      [...optionVote, state.options[optionVote[0]]])
+  },
+  canVote(state) {
+    return this.optionsCount(state) &gt;= 2
+  },
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:10">10</a></p>
+</div>
+<blockquote><p> I have considered defining the state transform callbacks in a similar object.
+ Were the program to grow further, it would make sense to isolate all state
+ related functionality from the components. This would improve the
+ testability.
+</p>
+</blockquote>
+
+</div>
+<a name="1:14"><div class="section"><h4>14. To Pairs Helper</h4></a>
+<p>The computed helpers depend on the toPairs helper. Here the implementation and
+some tests.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{To Pairs Helper <a href="index.html#1:14">14</a>}</span>
+<pre class="prettyprint">
+function toPairs(object) {
+  return Object.keys(object).reduce((array, property) =&gt; {
+    return [...array, [property, object[property]]]
+  }, [])
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:18">18</a></p>
+</div>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>./t/to_pairs.t</strong> <a href="index.html#1:14">14</a>}</span>
+<pre class="prettyprint">
+<span class="nocode pln">{Tape Script, <a href="index.html#1:8">8</a>}</span>
+<span class="nocode pln">{To Pairs Helper, <a href="index.html#1:14">14</a>}</span>
+
+test('Object is transformed to key value pairs', t =&gt; {
+  t.deepEquals(toPairs({
+    a: 1,
+    b: 2,
+  }), [
+    ['a', 1],
+    ['b', 2],
+  ])
+  t.end()
+})
+</pre>
+
+
+
+</div>
+</div>
+<a name="1:15"><div class="section"><h4>15. Options Components</h4></a>
+<p>The goal of <code>Options Component</code> is to list all the options and allow removal of
+one of the options. For now each option has its own event listener. This can be
+improved by using event bubbling and registering an event listener on a parent
+element. This would be more memory efficient in cases where one would have many
+elements. In this case we have a max of 10 options.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Options Component <a href="index.html#1:15">15</a>}</span>
+<pre class="prettyprint">
+function optionsComponent(myState) {
+  const ul = document.createElement('ul')
+
+<span class="nocode pln">  {Edit Option Component, <a href="index.html#1:16">16</a>}</span>
+
+  const mapEditOptionsComponent = mapComponents(
+    editOptionComponent.bind(null, myState) // partial application
+  )
+
+  myState.addListener((state) =&gt; {
+    mapEditOptionsComponent(myState.computed.optionsWithIndex(state))
+      .forEach(e =&gt; ul.appendChild(e))
+  })
+
+  return ul
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:12">12</a></p>
+</div>
+</div>
+<a name="1:16"><div class="section"><h4>16. Edit Options Component</h4></a>
+<p>An individual input element and remove button that allows editing and removal
+of an poll option.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Edit Option Component <a href="index.html#1:16">16</a>}</span>
+<pre class="prettyprint">
+function editOptionComponent(state, option) {
+  const [index, value] = option
+  const li = document.createElement('li')
+  const input = inputComponent()
+  const button = document.createElement('button')
+
+  function removeOption(event) {
+    event.preventDefault()
+
+    state.transform(state =&gt; {
+      state.options[index] = undefined
+      return state
+    })
+  }
+
+  function updateOption(event) {
+    state.transform(state =&gt; {
+      state.options[index] = event.target.value
+      return state
+    })
+  }
+
+  button.addEventListener('click', removeOption)
+  button.textContent = 'x'
+
+  input.value = value
+  input.addEventListener('change', updateOption)
+
+  li.appendChild(input)
+  li.appendChild(button)
+
+  return li
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:15">15</a></p>
+</div>
+</div>
+<a name="1:17"><div class="section"><h4>17. Add Option Component</h4></a>
+<p>Allows the poll maker to create a new poll option.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Add Option Component <a href="index.html#1:17">17</a>}</span>
+<pre class="prettyprint">
+function addOptionComponent(state) {
+  const form = document.createElement('form')
+  const input = inputComponent()
+  const button = document.createElement('button')
+
+  function onAddOption(event) {
+      event.preventDefault()
+      state.transform(state =&gt; {
+        state.optionInput = ''
+        state.options.push(input.value)
+        return state
+      })
+      return false
+  }
+
+  function onInput(event) {
+    state.transform(state =&gt; {
+      state.optionInput = event.target.value
+      return state
+    })
+  }
+
+  form.addEventListener('submit', onAddOption)
+  input.addEventListener('input', onInput)
+
+<span class="nocode pln">  {Can Add Option Predicate, <a href="index.html#1:17">17</a>}</span>
+
+  state.addListener(state =&gt; {
+    input.value = state.optionInput
+
+    canAddOption(state)
+      ? button.removeAttribute('disabled')
+      : button.setAttribute('disabled', 'disabled')
+  })
+
+  form.appendChild(input)
+  form.appendChild(button)
+
+  button.textContent = 'add'
+
+  return form
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:12">12</a></p>
+</div>
+<p>Options can only be added when:
+</p>
+<ul>
+<li>There are less than 10 options already.
+</li>
+<li>The current option string for adding is not empty.
+</li>
+</ul>
+
+<div class="codeblock">
+<span class="codeblock_name">{Can Add Option Predicate <a href="index.html#1:17">17</a>}</span>
+<pre class="prettyprint">
+function canAddOption(state) {
+  return (compact(state.options).length &lt; 10) &amp;&amp; (state.optionInput !== '')
+}
+</pre>
+
+
+
+</div>
+</div>
+<a name="1:18"><div class="section"><h4>18. Helpers</h4></a>
+<p>Where did <code>mapComponents</code> come from? It is a helper that allows us to create
+and update elements based on an array. There are also other helpers.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Helpers <a href="index.html#1:18">18</a>}</span>
+<pre class="prettyprint">
+<span class="nocode pln">{Map Components Helper, <a href="index.html#1:19">19</a>}</span>
+<span class="nocode pln">{Compact Helper, <a href="index.html#1:20">20</a>}</span>
+<span class="nocode pln">{To Pairs Helper, <a href="index.html#1:14">14</a>}</span>
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:4">4</a></p>
+</div>
+</div>
+<a name="1:19"><div class="section"><h4>19. Map Components Helper</h4></a>
+<p>I have chosen to make this an <a href="https://en.wikipedia.org/wiki/Higher_order_function#JavaScript">higher order function</a> for several reasons.
+</p>
+<p>Firstly because I need some state to keep reference to the current elements.
+Ideally I want this state to be isolated to prevent undesired mutation. I can
+achieve that by using the function scope.
+</p>
+<p>Secondly I can get more code reuse, allowing me to create multiple functions
+that have similar behavior just by calling the <code>mapComponents</code> helper.
+</p>
+<p>The inner mapComponents function returns the newly created elements for the
+user to append to a parent element. For sake of ease I remove all old elements
+before creating all new elements. This removes the hassle of having to mutate
+existing DOM elements. This might be less memory efficient but it is much
+easier to write.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Map Components Helper <a href="index.html#1:19">19</a>}</span>
+<pre class="prettyprint">
+function mapComponents(createComponent) {
+  let components = []
+
+  return function mapComponentsFn(array, ...rest) {
+    const createdComponents = []
+
+    // Removal introduces an issue where currently selected input elements are
+    // removed. As a result the cursor disappears. Bad UX. Should be mutating
+    // existing elements to coincide with the latest state. Not doing for now.
+    components.forEach(elem =&gt; elem.remove())
+
+    components = array
+      .map((item, index) =&gt; createComponent(item, index, ...rest))
+
+    return components
+  }
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:18">18</a></p>
+</div>
+</div>
+<a name="1:20"><div class="section"><h4>20. Compact Helper</h4></a>
+<p>Why the compact helper? The alternative would be implementing a <a href="https://en.wikipedia.org/wiki/Linked_list">Linked
+List</a>. Why? Imagine we have an array of options and I remove an option from
+the poll somewhere in the middle of the list. Everything after that removed
+item is moved one index down the array. All event listeners registered and
+other parts of the applications that uses the index of these options will have
+to be updated.
+</p>
+<p>So what if we do not change the indices of the items ever. We can remove things
+by just setting the value on a specific index to <code>undefined</code>. We then use the
+compact function to get all not yet removed items.
+</p>
+<p>For sake of ease I chose to use a compact helper function instead of writing
+a linked list implementation. It's a time saver. The linked list could be
+implemented in the future. A linked list is the most elegant solution I can
+think of.
+</p>
+<p>The <code>compactWithIndex</code> version is necessary to enable correct mutation of the
+original options array.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Compact Helper <a href="index.html#1:20">20</a>}</span>
+<pre class="prettyprint">
+function compact(arr) {
+  return arr.filter(value =&gt; value != null)
+}
+
+function compactWithIndex(arr) {
+  return arr.reduce((acc, value, index) =&gt; {
+    if (value != null)
+      acc.push([index, value])
+
+    return acc
+  }, [])
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:18">18</a></p>
+</div>
+</div>
+<a name="1:21"><div class="section"><h4>21. Vote Component</h4></a>
+<p>The first column was a lot to take in. We created helpers and quite some
+components. This column should be much more concise because we get to reuse
+those helpers and this column has less components. It is just a form with radio
+buttons.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Vote Component <a href="index.html#1:21">21</a>}</span>
+<pre class="prettyprint">
+function voteComponent(myState) {
+  const form = document.createElement('form')
+  const question = document.createElement('p')
+  const button = document.createElement('button')
+  const ul = document.createElement('ul')
+
+  let options = []
+
+  function onVote (event) {
+    event.preventDefault()
+    let option = options.find(li =&gt; li.children[0].checked)
+
+    if (option === undefined)
+      return false
+
+    const value = option.children[0].value
+
+    myState.transform(state =&gt; {
+      state.votes[value] = (state.votes[value] === undefined)
+        ? 1
+        : state.votes[value] + 1
+
+      return state
+    })
+
+    return false
+  }
+
+  button.textContent = 'vote'
+
+  form.addEventListener('submit', onVote)
+
+<span class="nocode pln">  {Option Radio Component, <a href="index.html#1:21">21</a>}</span>
+
+  const mapOptionRadioComponent = mapComponents(
+    optionRadioComponent.bind(null, myState)
+  )
+
+  myState.addListener(state =&gt; {
+    question.textContent = state.question
+    options = mapOptionRadioComponent(
+      myState.computed.optionsWithIndex(state))
+
+    options.forEach(elem =&gt; ul.appendChild(elem))
+  })
+
+  form.appendChild(question)
+  form.appendChild(ul)
+  form.appendChild(button)
+
+  return form
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:10">10</a></p>
+</div>
+
+<div class="codeblock">
+<span class="codeblock_name">{Option Radio Component <a href="index.html#1:21">21</a>}</span>
+<pre class="prettyprint">
+function optionRadioComponent(state, option) {
+  const li = document.createElement('li')
+  const input = inputComponent()
+  const label = document.createElement('label')
+
+  label.textContent = option[1]
+  label.setAttribute('for', option[0])
+
+  input.setAttribute('type', 'radio')
+  input.setAttribute('id', option[0])
+  input.setAttribute('name', 'vote')
+  input.setAttribute('value', option[0])
+
+  li.appendChild(input)
+  li.appendChild(label)
+
+  return li
+}
+</pre>
+
+
+
+</div>
+</div>
+<a name="1:22"><div class="section"><h4>22. Result Component</h4></a>
+<p>The third column reports on the votes. It is a bar chart where each bar
+displays the option and absolute amount of votes on every bar.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Result Component <a href="index.html#1:22">22</a>}</span>
+<pre class="prettyprint">
+function resultComponent(myState) {
+  const question = document.createElement('p')
+  const div = document.createElement('div')
+
+<span class="nocode pln">  {Bar Chart Component, <a href="index.html#1:22">22</a>}</span>
+<span class="nocode pln">  {Total Votes Component, <a href="index.html#1:22">22</a>}</span>
+
+  myState.addListener(state =&gt;
+    question.textContent = state.question
+  )
+
+  div.appendChild(question)
+  div.appendChild(barChartComponent(myState))
+  div.appendChild(totalVotesComponent(myState))
+
+  return div
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:10">10</a></p>
+</div>
+
+<div class="codeblock">
+<span class="codeblock_name">{Bar Chart Component <a href="index.html#1:22">22</a>}</span>
+<pre class="prettyprint">
+function barChartComponent(myState) {
+  const div = document.createElement('div')
+
+<span class="nocode pln">  {Bar Component, <a href="index.html#1:22">22</a>}</span>
+
+  const mapBarComponent = mapComponents(barComponent)
+
+  myState.addListener(state =&gt; {
+    const maxVotes = myState.computed.maxVotes(state)
+
+    mapBarComponent(myState.computed.optionVotes(state), maxVotes)
+      .forEach(elem =&gt; div.appendChild(elem))
+  })
+
+  return div
+}
+</pre>
+
+
+
+</div>
+
+<div class="codeblock">
+<span class="codeblock_name">{Bar Component <a href="index.html#1:22">22</a>}</span>
+<pre class="prettyprint">
+function barComponent([_, votes, option], index, totalVotes) {
+  const div = document.createElement('div')
+  const label = document.createElement('div')
+  const value = document.createElement('span')
+
+  const percentage = (totalVotes
+    ? votes / totalVotes
+    : 0) * 100
+
+  value.textContent = votes
+  value.style.position = 'absolute'
+  value.style.right = '0px'
+
+  label.textContent = option
+
+<span class="nocode pln">  {Colors Array, <a href="index.html#1:5">5</a>}</span>
+
+  div.title = option
+  div.style.width = `${percentage}%`
+  div.style.height = '1.5rem'
+  div.style['background-color'] = colors[index]
+  div.style.border = '1px solid black'
+  div.style.position = 'relative'
+  div.style.bottom = '0px'
+
+  div.appendChild(value)
+  div.appendChild(label)
+
+  return div
+}
+</pre>
+
+
+
+</div>
+
+<div class="codeblock">
+<span class="codeblock_name">{Total Votes Component <a href="index.html#1:22">22</a>}</span>
+<pre class="prettyprint">
+function totalVotesComponent(myState) {
+  const div = document.createElement('div')
+
+  myState.addListener(state =&gt; {
+    div.textContent = `Total votes: ${myState.computed.totalVotes(state)}`
+  })
+
+  return div
+}
+</pre>
+
+
+
+</div>
+</div>
+<a name="1:23"><div class="section"><h4>23. Pure CSS</h4></a>
+<p>I needed some columns and better styling for the forms. Not interested in
+spending to much time on that.
+</p>
+<p>See <a href="https://purecss.io/">https://purecss.io/</a>
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Pure CSS Link <a href="index.html#1:23">23</a>}</span>
+<pre class="prettyprint">
+&lt;link
+  rel="stylesheet"
+  href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
+  integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ"
+  crossorigin="anonymous"/&gt;
+
+&lt;link
+  rel="stylesheet"
+  href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css"/&gt;
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:2">2</a></p>
+</div>
+</div>
+<a name="1:24"><div class="section"><h4>24. CSS rules</h4></a>
+<p>We keep it simple and make the default HTML styling do most of the heavy
+lifting.
+</p>
+
+<div class="codeblock">
+<span class="codeblock_name">{Single Page Voter CSS rules <a href="index.html#1:24">24</a>}</span>
+<pre class="prettyprint">
+body {
+  font-family: arial;
+}
+
+ul {
+  list-style: none;
+}
+</pre>
+
+
+<p class="seealso">Used in section <a href="index.html#1:2">2</a></p>
+</div>
+</div>
+<a name="1:25"><div class="section"><h4>25. Testing Components</h4></a>
+<p>It is relatively simple to unit test these components as they are just
+functions. The document global variable should be mocked when running in a node
+environment, or one can run the tests in a browser environment (which should be
+better). Because of lack of time I won't be testing component functions.
+</p>
+
+</div>
+<a name="1:26"><div class="section"><h4>26. Conclusion</h4></a>
+<p>With this project I have showcased my understanding of the fundamentals of
+a Single Page Application. This basic knowledge is essential regardless of
+the SPA framework that is being used.
+</p>
+<p>The use of Literate Programming is something new for me. I wonder if you the
+reader has benefited from splitting the code into sections with explanation. I,
+as the programmer, enjoyed writing code like this. It created small and
+readable code sections that I could easily tie into the eventual code.
+</p>
+<p>The choice to use Vanilla JS has been a interesting test for myself. It has
+taken more time then I expected. SPA frameworks make templating a breeze,
+compared to <code>.appendChild</code> and <code>.classList.add</code>. Most SPAs have conventions for
+state management and the making of components that make it easier to work
+together and across projects.
+</p>
+
+</div>
+</body>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Single page voter</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
+      integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ"
+      crossorigin="anonymous"/>
+    
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css"/>
+
+    <style>
+      body {
+        font-family: arial;
+      }
+      
+      ul {
+        list-style: none;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <h1>Single Page Voter</h1>
+     <div id='poll-creator'></div>
+
+  </body>
+
+  <script>
+    (function() {
+      function state(initialState) {
+        let state = initialState();
+        const callbacks = {}
+        let id = 0
+      
+        function transform(transformFn) {
+          state = transformFn(state)
+      
+          // Call all listener callbacks when transform occurs.
+          Object.keys(callbacks)
+            .forEach(id => callbacks[id](state))
+        }
+      
+        function addListener(callback) {
+          id = id + 1
+          callback(state)
+          callbacks[id] = callback
+          return id
+        }
+      
+        function removeListener(id) {
+          delete callbacks[id]
+        }
+      
+        function reset() {
+          transform(() => initialState())
+        }
+      
+        return {
+          reset,
+          transform,
+          addListener,
+          removeListener,
+        }
+      }
+
+      function mapComponents(createComponent) {
+        let components = []
+      
+        return function mapComponentsFn(array, ...rest) {
+          const createdComponents = []
+      
+          // Removal introduces an issue where currently selected input elements are
+          // removed. As a result the cursor disappears. Bad UX. Should be mutating
+          // existing elements to coincide with the latest state. Not doing for now.
+          components.forEach(elem => elem.remove())
+      
+          components = array
+            .map((item, index) => createComponent(item, index, ...rest))
+      
+          return components
+        }
+      }
+
+      function compact(arr) {
+        return arr.filter(value => value != null)
+      }
+      
+      function compactWithIndex(arr) {
+        return arr.reduce((acc, value, index) => {
+          if (value != null)
+            acc.push([index, value])
+      
+          return acc
+        }, [])
+      }
+
+      function toPairs(object) {
+        return Object.keys(object).reduce((array, property) => {
+          return [...array, [property, object[property]]]
+        }, [])
+      }
+
+
+      // common components
+      function inputComponent() {
+        const input = document.createElement('input')
+      
+        input.addEventListener('input', event => {
+          input.value = input.value.substring(0, 80)
+        })
+      
+        return input
+      }
+
+      
+      // first column
+      function editPollComponent(myState) {
+        const form = document.createElement('form')
+        const p = document.createElement('p')
+        const question = inputComponent()
+        const options = optionsComponent(myState)
+        const optionsCap = optionsCapComponent(myState)
+        const reset = document.createElement('button')
+      
+        reset.textContent = 'reset'
+      
+        myState.addListener(state => {
+          question.value = state.question
+        })
+      
+        function updateQuestion(event) {
+          myState.transform(state => {
+            state.question = event.target.value
+            return state
+          })
+        }
+      
+        function optionsComponent(myState) {
+          const ul = document.createElement('ul')
+        
+          function editOptionComponent(state, option) {
+            const [index, value] = option
+            const li = document.createElement('li')
+            const input = inputComponent()
+            const button = document.createElement('button')
+          
+            function removeOption(event) {
+              event.preventDefault()
+          
+              state.transform(state => {
+                state.options[index] = undefined
+                return state
+              })
+            }
+          
+            function updateOption(event) {
+              state.transform(state => {
+                state.options[index] = event.target.value
+                return state
+              })
+            }
+          
+            button.addEventListener('click', removeOption)
+            button.textContent = 'x'
+          
+            input.value = value
+            input.addEventListener('change', updateOption)
+          
+            li.appendChild(input)
+            li.appendChild(button)
+          
+            return li
+          }
+
+        
+          const mapEditOptionsComponent = mapComponents(
+            editOptionComponent.bind(null, myState) // partial application
+          )
+        
+          myState.addListener((state) => {
+            mapEditOptionsComponent(myState.computed.optionsWithIndex(state))
+              .forEach(e => ul.appendChild(e))
+          })
+        
+          return ul
+        }
+
+        function optionsCapComponent(myState) {
+          const elem = document.createElement('div')
+        
+          myState.addListener(state => {
+            const count = myState.computed.optionsCount(state)
+            elem.innerHTML = `${count}/10 possible answers`
+          })
+        
+          return elem
+        }
+
+        function addOptionComponent(state) {
+          const form = document.createElement('form')
+          const input = inputComponent()
+          const button = document.createElement('button')
+        
+          function onAddOption(event) {
+              event.preventDefault()
+              state.transform(state => {
+                state.optionInput = ''
+                state.options.push(input.value)
+                return state
+              })
+              return false
+          }
+        
+          function onInput(event) {
+            state.transform(state => {
+              state.optionInput = event.target.value
+              return state
+            })
+          }
+        
+          form.addEventListener('submit', onAddOption)
+          input.addEventListener('input', onInput)
+        
+          function canAddOption(state) {
+            return (compact(state.options).length < 10) && (state.optionInput !== '')
+          }
+
+        
+          state.addListener(state => {
+            input.value = state.optionInput
+        
+            canAddOption(state)
+              ? button.removeAttribute('disabled')
+              : button.setAttribute('disabled', 'disabled')
+          })
+        
+          form.appendChild(input)
+          form.appendChild(button)
+        
+          button.textContent = 'add'
+        
+          return form
+        }
+
+      
+        reset.addEventListener('click', event => {
+          event.preventDefault()
+          myState.reset()
+          return false
+        })
+      
+        question.addEventListener('input', updateQuestion)
+      
+        // Prevent enter from pressing any buttons.
+        question.addEventListener('keypress', event => {
+          if ((event.which || event.keyCode || event.charCode) === 13)
+            event.preventDefault()
+        })
+      
+        p.appendChild(question)
+      
+        form.appendChild(p)
+        form.appendChild(options)
+        form.appendChild(addOptionComponent(myState))
+        form.appendChild(optionsCap)
+        form.appendChild(reset)
+      
+        return form
+      }
+
+      
+      // second column
+      function voteComponent(myState) {
+        const form = document.createElement('form')
+        const question = document.createElement('p')
+        const button = document.createElement('button')
+        const ul = document.createElement('ul')
+      
+        let options = []
+      
+        function onVote (event) {
+          event.preventDefault()
+          let option = options.find(li => li.children[0].checked)
+      
+          if (option === undefined)
+            return false
+      
+          const value = option.children[0].value
+      
+          myState.transform(state => {
+            state.votes[value] = (state.votes[value] === undefined)
+              ? 1
+              : state.votes[value] + 1
+      
+            return state
+          })
+      
+          return false
+        }
+      
+        button.textContent = 'vote'
+      
+        form.addEventListener('submit', onVote)
+      
+        function optionRadioComponent(state, option) {
+          const li = document.createElement('li')
+          const input = inputComponent()
+          const label = document.createElement('label')
+        
+          label.textContent = option[1]
+          label.setAttribute('for', option[0])
+        
+          input.setAttribute('type', 'radio')
+          input.setAttribute('id', option[0])
+          input.setAttribute('name', 'vote')
+          input.setAttribute('value', option[0])
+        
+          li.appendChild(input)
+          li.appendChild(label)
+        
+          return li
+        }
+
+      
+        const mapOptionRadioComponent = mapComponents(
+          optionRadioComponent.bind(null, myState)
+        )
+      
+        myState.addListener(state => {
+          question.textContent = state.question
+          options = mapOptionRadioComponent(
+            myState.computed.optionsWithIndex(state))
+      
+          options.forEach(elem => ul.appendChild(elem))
+        })
+      
+        form.appendChild(question)
+        form.appendChild(ul)
+        form.appendChild(button)
+      
+        return form
+      }
+
+      
+      // third column
+      function resultComponent(myState) {
+        const question = document.createElement('p')
+        const div = document.createElement('div')
+      
+        function barChartComponent(myState) {
+          const div = document.createElement('div')
+        
+          function barComponent([_, votes, option], index, totalVotes) {
+            const div = document.createElement('div')
+            const label = document.createElement('div')
+            const value = document.createElement('span')
+          
+            const percentage = (totalVotes
+              ? votes / totalVotes
+              : 0) * 100
+          
+            value.textContent = votes
+            value.style.position = 'absolute'
+            value.style.right = '0px'
+          
+            label.textContent = option
+          
+            const colors = [
+              '#EE82EE',
+              '#EEE8AA',
+              '#F08080',
+              '#F0E68C',
+              '#F0F8FF',
+              '#F0FFF0',
+              '#F0FFFF',
+              '#F4A460',
+              '#F5DEB3',
+              '#F5F5DC',
+              '#F5F5F5',
+              '#F5FFFA',
+              '#F8F8FF',
+              '#FA8072',
+            ]
+
+          
+            div.title = option
+            div.style.width = `${percentage}%`
+            div.style.height = '1.5rem'
+            div.style['background-color'] = colors[index]
+            div.style.border = '1px solid black'
+            div.style.position = 'relative'
+            div.style.bottom = '0px'
+          
+            div.appendChild(value)
+            div.appendChild(label)
+          
+            return div
+          }
+
+        
+          const mapBarComponent = mapComponents(barComponent)
+        
+          myState.addListener(state => {
+            const maxVotes = myState.computed.maxVotes(state)
+        
+            mapBarComponent(myState.computed.optionVotes(state), maxVotes)
+              .forEach(elem => div.appendChild(elem))
+          })
+        
+          return div
+        }
+
+        function totalVotesComponent(myState) {
+          const div = document.createElement('div')
+        
+          myState.addListener(state => {
+            div.textContent = `Total votes: ${myState.computed.totalVotes(state)}`
+          })
+        
+          return div
+        }
+
+      
+        myState.addListener(state =>
+          question.textContent = state.question
+        )
+      
+        div.appendChild(question)
+        div.appendChild(barChartComponent(myState))
+        div.appendChild(totalVotesComponent(myState))
+      
+        return div
+      }
+
+      
+      function initialState() {
+        const fruits = [
+          'Apples ',
+          'Apricots ',
+          'Banana ',
+          'Cantaloupe ',
+          'Cherry ',
+          'Avocado',
+          'Carissa',
+          'Carob',
+          'Cattleya Guava',
+        ]
+
+      
+        return {
+          optionInput: '',
+          question: 'What fruit is the best fruit?',
+          options: fruits,
+          votes: {},
+        }
+      }
+      
+      const myState = state(initialState)
+      
+      myState.computed = {
+        options(state) {
+          return compact(state.options)
+        },
+        optionsCount(state) {
+          return this.options(state).length
+        },
+        optionsWithIndex(state) {
+          return compactWithIndex(state.options)
+        },
+        totalVotes(state) {
+          return Object.values(state.votes).reduce((a, b) => a + b, 0)
+        },
+        maxVotes(state) {
+          return Object.values(state.votes)
+            .reduce((a, b) => Math.max(a, b), 0) || 0
+        },
+        optionVotes(state) {
+          return toPairs(state.votes).map(optionVote =>
+            [...optionVote, state.options[optionVote[0]]])
+        },
+        canVote(state) {
+          return this.optionsCount(state) >= 2
+        },
+      }
+
+      
+      const appElem = document.getElementById('poll-creator')
+      
+      // columns
+      const editPoll = appElem.appendChild(editPollComponent(myState))
+      const vote = appElem.appendChild(voteComponent(myState))
+      const result = appElem.appendChild(resultComponent(myState))
+      
+      myState.addListener(state => {
+        const displayType = myState.computed.canVote(state) && state.question
+          ? 'block'
+          : 'none'
+      
+        vote.style.display = displayType
+        result.style.display = displayType
+      })
+
+      function resetVotesOnPollChange() {
+        let oldValue
+      
+        return ({options, question}) => {
+          const newValue = JSON.stringify({
+            options: options,
+            question: question
+          })
+      
+          if (oldValue === undefined)
+            oldValue = newValue
+      
+          if (oldValue !== newValue) {
+            oldValue = newValue
+            myState.transform(state => {
+              state.votes = {}
+              return state
+            })
+          }
+        }
+      }
+      
+      myState.addListener(resetVotesOnPollChange())
+
+      
+      appElem.classList.add('pure-g')
+      
+      editPoll.classList.add('pure-u-1')
+      vote.classList.add('pure-u-1')
+      result.classList.add('pure-u-1')
+      
+      editPoll.classList.add('pure-u-sm-1-3')
+      vote.classList.add('pure-u-sm-1-3')
+      result.classList.add('pure-u-sm-1-3')
+
+    })()
+
+  </script>
+
+</html>
+

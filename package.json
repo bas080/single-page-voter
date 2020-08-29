@@ -1,0 +1,14 @@
+{
+  "name": "simple-page-voter",
+  "version": "1.0.0",
+  "description": "Vote on a single page",
+  "main": "none",
+  "scripts": {
+    "test": "prove"
+  },
+  "author": "Bas Huis",
+  "license": "ISC",
+  "dependencies": {
+    "tape": "^5.0.1"
+  }
+}
