@@ -31,12 +31,10 @@ Run lit before running the tests to make sure the generated files are up to
 date.
 
 ```sh
-$ lit index.lit && prove
+$ lit index.lit && prove | head -n -2 # Not intrested in summary results.
 t/state.t ..... ok
 t/to_pairs.t .. ok
 All tests successful.
-Files=2, Tests=9,  1 wallclock secs ( 0.03 usr  0.01 sys +  0.12 cusr  0.03 csys =  0.19 CPU)
-Result: PASS
 ```
 
 ## Contributing
