@@ -34,7 +34,7 @@ $ lit index.lit && prove
 t/state.t ..... ok
 t/to_pairs.t .. ok
 All tests successful.
-Files=2, Tests=9,  0 wallclock secs ( 0.03 usr  0.01 sys +  0.16 cusr  0.00 csys =  0.20 CPU)
+Files=2, Tests=9,  0 wallclock secs ( 0.02 usr  0.01 sys +  0.15 cusr  0.01 csys =  0.19 CPU)
 Result: PASS
 ```
 

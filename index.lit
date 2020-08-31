@@ -18,7 +18,8 @@ While implementing this tool I have decided to:
 3. Design for *bleeding* edge browsers only. Not cleaning up event listeners
    when an element is removed.
 
-4. Not focus on tools like linters, prettifiers, transpilers and bundlers.
+4. Not focus on tools like frameworks, linters, prettifiers, transpilers and
+   bundlers.
 
 See single page voter in action over [here][3], or keep reading to see how and
 why I have implemented the way I did.
@@ -79,9 +80,6 @@ All but the first element is generated using Javascript. This div contains an
 > it easier when combining other components in the HTML.
 
 @s Vanilla Javascript
-
-No need for frameworks, bundlers and package management for a project as simple
-as this.
 
 We will use an [IIFE][1]. This allows one to define variables without changing
 any global variables/objects.
