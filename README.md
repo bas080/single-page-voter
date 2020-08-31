@@ -31,7 +31,7 @@ Run lit before running the tests to make sure the generated files are up to
 date.
 
 ```sh
-$ lit index.lit && prove | head -n -2 # Not intrested in summary results.
+$ lit index.lit && prove | head -n -2 # Not interested in summary results.
 t/state.t ..... ok
 t/to_pairs.t .. ok
 All tests successful.

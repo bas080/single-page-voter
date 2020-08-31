@@ -86,7 +86,7 @@ any global variables/objects.
 
 > To prevent naming collisions within our own IIFE, we could define a namespace
 > object. This can come in handy when in the future you or someone else pulls in
-> a dependency in the global environment or the IFFE's code block. However,
+> a dependency in the global environment or the IIFE's code block. However,
 > I did not do this. If a project requires this type of code separation it is
 > better to use modules and bundling. Let's look at that IIFE.
 
@@ -411,7 +411,7 @@ myState.addListener(state => {
 Whenever the poll changes we want to reset the votes. We define this in a state
 listener in order to have the checking and changing all in one place.
 
-> Previously I several `state.votes = {}` peppered througout some callbacks.
+> Previously I several `state.votes = {}` peppered throughout some callbacks.
 > This goes against the DRY principle which makes it harder to maintain the
 > code.
 
