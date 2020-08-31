@@ -289,16 +289,38 @@ function state(initialState) {
 
 </div>
 <a name="1:8"><div class="section"><h4>8. Testing Our JS code</h4></a>
-<p>I have chosen a tool I find very useful which is Perl's <a href="https://perldoc.perl.org/prove.html">prove</a>. It is
+<p>I have chosen a tool I find very useful which is Perl's [prove][2]. It is
 a test harness that will run all <code>./t/*.t</code> files. It expects these scripts to
-output <a href="http://testanything.org/">TAP</a>.
+output [TAP][3].
 </p>
-<p>To make this possible we need a JS library that supports tap. NPM's <a href="https://www.npmjs.com/package/tape">tape</a>
+<p>To make this possible we need a JS library that supports tap. NPM's [tape][1]
 should do the job.
 </p>
-<blockquote><p> We are running our unit tests in a node environment.
+<p>We create the <code>package.json</code> and register tape as one of the dev dependencies.
+We also register <code>prove</code> as the test script.
 </p>
-</blockquote>
+
+<div class="codeblock">
+<span class="codeblock_name">{<strong>./package.json</strong> <a href="index.html#1:8">8</a>}</span>
+<pre class="prettyprint">
+{
+  "name": "simple-page-voter",
+  "version": "1.0.0",
+  "description": "Vote on a single page",
+  "author": "Bas Huis",
+  "license": "GNU General Public License 3.0",
+  "scripts": {
+    "test": "prove"
+  },
+  "devDependencies": {
+    "tape": "^5.0.1"
+  }
+}
+</pre>
+
+
+
+</div>
 
 <div class="codeblock">
 <span class="codeblock_name">{Tape Script <a href="index.html#1:8">8</a>}</span>

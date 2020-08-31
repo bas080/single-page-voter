@@ -2,13 +2,13 @@
   "name": "simple-page-voter",
   "version": "1.0.0",
   "description": "Vote on a single page",
-  "main": "none",
+  "author": "Bas Huis",
+  "license": "GNU General Public License 3.0",
   "scripts": {
     "test": "prove"
   },
-  "author": "Bas Huis",
-  "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "tape": "^5.0.1"
   }
 }
+
