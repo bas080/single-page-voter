@@ -594,6 +594,15 @@ function inputComponent() {
 
 <p class="seealso">Used in section <a href="index.html#1:10">10</a></p>
 </div>
+<blockquote><p> After writing this common component, I considered to instead define the
+ input value limit using one or more state listeners. This would result in
+ adding some extra code because all input fields that use this limit would
+ require an event listener to update the value of that element with the
+ sub-stringed value. The <code>inputComponent</code> approach is less code and solves the
+ requirement for this project sufficiently.
+</p>
+</blockquote>
+
 </div>
 <a name="1:12"><div class="section"><h4>12. Edit Poll Component</h4></a>
 <p>The first column is the poll editing form. The component is able to transform

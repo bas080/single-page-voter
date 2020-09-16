@@ -463,6 +463,13 @@ function inputComponent() {
 }
 ---
 
+> After writing this common component, I considered to instead define the
+> input value limit using one or more state listeners. This would result in
+> adding some extra code because all input fields that use this limit would
+> require an event listener to update the value of that element with the
+> sub-stringed value. The `inputComponent` approach is less code and solves the
+> requirement for this project sufficiently.
+
 @s Edit Poll Component
 
 The first column is the poll editing form. The component is able to transform
