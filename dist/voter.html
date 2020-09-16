@@ -202,14 +202,14 @@
           return elem
         }
 
-        function addOptionComponent(state) {
+        function addOptionComponent(myState) {
           const form = document.createElement('form')
           const input = inputComponent()
           const button = document.createElement('button')
         
           function onAddOption(event) {
               event.preventDefault()
-              state.transform(state => {
+              myState.transform(state => {
                 state.optionInput = ''
                 state.options.push(input.value)
                 return state
@@ -218,7 +218,7 @@
           }
         
           function onInput(event) {
-            state.transform(state => {
+            myState.transform(state => {
               state.optionInput = event.target.value
               return state
             })
@@ -227,15 +227,10 @@
           form.addEventListener('submit', onAddOption)
           input.addEventListener('input', onInput)
         
-          function canAddOption(state) {
-            return (compact(state.options).length < 10) && (state.optionInput !== '')
-          }
-
-        
-          state.addListener(state => {
+          myState.addListener(state => {
             input.value = state.optionInput
         
-            canAddOption(state)
+            myState.computed.canAddOption(state)
               ? button.removeAttribute('disabled')
               : button.setAttribute('disabled', 'disabled')
           })
@@ -466,6 +461,9 @@
       myState.computed = {
         options(state) {
           return compact(state.options)
+        },
+        canAddOption(state) {
+          return (this.options(state).length < 10) && (state.optionInput !== '')
         },
         optionsCount(state) {
           return this.options(state).length

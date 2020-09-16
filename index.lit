@@ -556,6 +556,9 @@ myState.computed = {
   options(state) {
     return compact(state.options)
   },
+  canAddOption(state) {
+    return (this.options(state).length < 10) && (state.optionInput !== '')
+  },
   optionsCount(state) {
     return this.options(state).length
   },
@@ -687,14 +690,14 @@ function editOptionComponent(state, option) {
 Allows the poll maker to create a new poll option.
 
 --- Add Option Component
-function addOptionComponent(state) {
+function addOptionComponent(myState) {
   const form = document.createElement('form')
   const input = inputComponent()
   const button = document.createElement('button')
 
   function onAddOption(event) {
       event.preventDefault()
-      state.transform(state => {
+      myState.transform(state => {
         state.optionInput = ''
         state.options.push(input.value)
         return state
@@ -703,7 +706,7 @@ function addOptionComponent(state) {
   }
 
   function onInput(event) {
-    state.transform(state => {
+    myState.transform(state => {
       state.optionInput = event.target.value
       return state
     })
@@ -712,12 +715,10 @@ function addOptionComponent(state) {
   form.addEventListener('submit', onAddOption)
   input.addEventListener('input', onInput)
 
-  @{Can Add Option Predicate}
-
-  state.addListener(state => {
+  myState.addListener(state => {
     input.value = state.optionInput
 
-    canAddOption(state)
+    myState.computed.canAddOption(state)
       ? button.removeAttribute('disabled')
       : button.setAttribute('disabled', 'disabled')
   })
@@ -728,17 +729,6 @@ function addOptionComponent(state) {
   button.textContent = 'add'
 
   return form
-}
----
-
-Options can only be added when:
-
-- There are less than 10 options already.
-- The current option string for adding is not empty.
-
---- Can Add Option Predicate
-function canAddOption(state) {
-  return (compact(state.options).length < 10) && (state.optionInput !== '')
 }
 ---
 

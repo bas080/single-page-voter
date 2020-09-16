@@ -706,6 +706,9 @@ myState.computed = {
   options(state) {
     return compact(state.options)
   },
+  canAddOption(state) {
+    return (this.options(state).length &lt; 10) &amp;&amp; (state.optionInput !== '')
+  },
   optionsCount(state) {
     return this.options(state).length
   },
@@ -868,14 +871,14 @@ function editOptionComponent(state, option) {
 <div class="codeblock">
 <span class="codeblock_name">{Add Option Component <a href="index.html#1:17">17</a>}</span>
 <pre class="prettyprint">
-function addOptionComponent(state) {
+function addOptionComponent(myState) {
   const form = document.createElement('form')
   const input = inputComponent()
   const button = document.createElement('button')
 
   function onAddOption(event) {
       event.preventDefault()
-      state.transform(state =&gt; {
+      myState.transform(state =&gt; {
         state.optionInput = ''
         state.options.push(input.value)
         return state
@@ -884,7 +887,7 @@ function addOptionComponent(state) {
   }
 
   function onInput(event) {
-    state.transform(state =&gt; {
+    myState.transform(state =&gt; {
       state.optionInput = event.target.value
       return state
     })
@@ -893,12 +896,10 @@ function addOptionComponent(state) {
   form.addEventListener('submit', onAddOption)
   input.addEventListener('input', onInput)
 
-<span class="nocode pln">  {Can Add Option Predicate, <a href="index.html#1:17">17</a>}</span>
-
-  state.addListener(state =&gt; {
+  myState.addListener(state =&gt; {
     input.value = state.optionInput
 
-    canAddOption(state)
+    myState.computed.canAddOption(state)
       ? button.removeAttribute('disabled')
       : button.setAttribute('disabled', 'disabled')
   })
@@ -914,26 +915,6 @@ function addOptionComponent(state) {
 
 
 <p class="seealso">Used in section <a href="index.html#1:12">12</a></p>
-</div>
-<p>Options can only be added when:
-</p>
-<ul>
-<li>There are less than 10 options already.
-</li>
-<li>The current option string for adding is not empty.
-</li>
-</ul>
-
-<div class="codeblock">
-<span class="codeblock_name">{Can Add Option Predicate <a href="index.html#1:17">17</a>}</span>
-<pre class="prettyprint">
-function canAddOption(state) {
-  return (compact(state.options).length &lt; 10) &amp;&amp; (state.optionInput !== '')
-}
-</pre>
-
-
-
 </div>
 </div>
 <a name="1:18"><div class="section"><h4>18. Helpers</h4></a>
