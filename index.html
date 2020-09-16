@@ -432,8 +432,8 @@ test('Reset the state', t =&gt; {
 </p>
 </blockquote>
 <p>These tests can be run by executing the <a href="./t/state.t"><code>./t/state.t</code></a> file or by running
-the <a href="https://perldoc.perl.org/prove.html">prove</a> command. Do make sure to first install the tape dependency with
-<code>npm i</code>.
+the <a href="https://perldoc.perl.org/prove.html">prove</a> or <code>npm t</code> command. Do make sure to first install the tape
+dependency with <code>npm i</code>.
 </p>
 <p>We have some tests for the state utility and we are ready to start initializing
 the components.
@@ -527,9 +527,9 @@ myState.addListener(state =&gt; {
 <p>Whenever the poll changes we want to reset the votes. We define this in a state
 listener in order to have the checking and changing all in one place.
 </p>
-<blockquote><p> Previously I several <code>state.votes = {}</code> peppered throughout some callbacks.
- This goes against the DRY principle which makes it harder to maintain the
- code.
+<blockquote><p> Previously I had several <code>state.votes = {}</code> peppered throughout some
+ callbacks.  This goes against the DRY principle which makes it harder to
+ maintain the code.
 </p>
 </blockquote>
 

@@ -326,8 +326,8 @@ test('Reset the state', t => {
 > For the sake of time I'll leave that for another day.
 
 These tests can be run by executing the [`./t/state.t`][2] file or by running
-the [prove][1] command. Do make sure to first install the tape dependency with
-`npm i`.
+the [prove][1] or `npm t` command. Do make sure to first install the tape
+dependency with `npm i`.
 
 We have some tests for the state utility and we are ready to start initializing
 the components.
@@ -411,9 +411,9 @@ myState.addListener(state => {
 Whenever the poll changes we want to reset the votes. We define this in a state
 listener in order to have the checking and changing all in one place.
 
-> Previously I several `state.votes = {}` peppered throughout some callbacks.
-> This goes against the DRY principle which makes it harder to maintain the
-> code.
+> Previously I had several `state.votes = {}` peppered throughout some
+> callbacks.  This goes against the DRY principle which makes it harder to
+> maintain the code.
 
 --- Reset Votes On Poll Change
 function resetVotesOnPollChange() {
