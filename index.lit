@@ -206,6 +206,10 @@ should do the job.
 We create the `package.json` and register tape as one of the dev dependencies.
 We also register `prove` as the test script.
 
+[1]:https://www.npmjs.com/package/tape
+[2]:https://perldoc.perl.org/prove.html
+[3]:http://testanything.org/
+
 --- ./package.json
 {
   "name": "simple-page-voter",
@@ -221,10 +225,6 @@ We also register `prove` as the test script.
   }
 }
 ---
-
-[1]:https://www.npmjs.com/package/tape
-[2]:https://perldoc.perl.org/prove.html
-[3]:http://testanything.org/
 
 --- Tape Script
 #!/usr/bin/env node
